@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Маркетинг как управляемая функция</title>
+    <link rel="preconnect" href="https://fonts.cdnfonts.com">
+    <link href="https://fonts.cdnfonts.com/css/gilroy-free" rel="stylesheet">
+    <style>
+
+        /* ============================================================
+           ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ — меняй цвета и шрифты здесь
+        ============================================================ */
+        :root {
+            --black:        #0C0C0C;
+            --white:        #FFFFFF;
+            --off-white:    #F7F7F5;
+            --gray-line:    #E8E8E4;
+            --text:         #1A1A1A;
+            --text-muted:   #6B6B65;
+            --accent:       #E8A020;
+            --accent-dark:  #C88510;
+            --radius:       16px;
+            --section-v:    100px;
+            --section-h:    6%;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Gilroy', -apple-system, 'Helvetica Neue', sans-serif;
+            background: var(--white);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============================================================
+           НАВИГАЦИЯ
+        ============================================================ */
+        nav {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 200;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px var(--section-h);
+            background: rgba(12, 12, 12, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .nav-name {
+            font-weight: 800;
+            font-size: 17px;
+            color: var(--white);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-name span { color: var(--accent); }
+
+        .nav-btn {
+            background: var(--accent);
+            color: var(--black);
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 14px;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-1px);
+        }
+
+        /* ============================================================
+           HERO
+        ============================================================ */
+        .hero {
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 130px var(--section-h) 90px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* декоративные пятна света */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -15%;
+            right: -8%;
+            width: 55%;
+            height: 75%;
+            background: radial-gradient(ellipse, rgba(232,160,32,.13) 0%, transparent 68%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -8%;
+            left: -5%;
+            width: 42%;
+            height: 55%;
+            background: radial-gradient(ellipse, rgba(232,160,32,.07) 0%, transparent 68%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            align-self: flex-start;
+            background: rgba(232,160,32,.15);
+            color: var(--accent);
+            border: 1px solid rgba(232,160,32,.35);
+            padding: 7px 18px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            margin-bottom: 36px;
+        }
+
+        .hero h1 {
+            font-weight: 800;
+            font-size: clamp(34px, 5.5vw, 70px);
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            max-width: 880px;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            font-weight: 300;
+            font-size: clamp(16px, 2vw, 20px);
+            line-height: 1.72;
+            max-width: 680px;
+            color: rgba(255,255,255,.65);
+            margin-bottom: 52px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--black);
+            padding: 17px 38px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 36px rgba(232,160,32,.28);
+        }
+
+        .btn-ghost {
+            font-weight: 300;
+            font-size: 15px;
+            color: rgba(255,255,255,.55);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .btn-ghost:hover { color: var(--white); }
+
+        .hero-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 80px;
+            color: rgba(255,255,255,.25);
+            font-size: 12px;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-divider::before {
+            content: '';
+            width: 44px;
+            height: 1px;
+            background: rgba(255,255,255,.2);
+        }
+
+        /* ============================================================
+           ОБЩИЕ СТИЛИ СЕКЦИЙ
+        ============================================================ */
+        section {
+            padding: var(--section-v) var(--section-h);
+        }
+
+        .label {
+            display: inline-block;
+            background: rgba(232,160,32,.1);
+            color: var(--accent-dark);
+            border-radius: 100px;
+            padding: 5px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: clamp(28px, 3.8vw, 50px);
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+            margin-bottom: 18px;
+        }
+
+        .section-lead {
+            font-weight: 300;
+            font-size: clamp(16px, 1.8vw, 19px);
+            color: var(--text-muted);
+            line-height: 1.65;
+            max-width: 620px;
+            margin-bottom: 60px;
+        }
+
+        /* ============================================================
+           ДЛЯ КОГО
+        ============================================================ */
+        #for-whom { background: var(--off-white); }
+
+        .pains {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 14px;
+        }
+
+        .pain-card {
+            background: var(--white);
+            border: 1px solid var(--gray-line);
+            border-radius: var(--radius);
+            padding: 28px 30px;
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .pain-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 6px 28px rgba(0,0,0,.07);
+        }
+
+        .pain-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+            margin-top: 7px;
+        }
+
+        .pain-card p {
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 1.55;
+        }
+
+        /* ============================================================
+           ЧТО Я ДЕЛАЮ
+        ============================================================ */
+        #what-i-do { background: var(--white); }
+
+        .tasks-note {
+            font-weight: 800;
+            font-size: 19px;
+            margin-bottom: 36px;
+            letter-spacing: -0.01em;
+        }
+
+        .tasks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 12px;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: var(--off-white);
+            border: 1px solid var(--gray-line);
+            border-radius: 12px;
+            font-weight: 300;
+            font-size: 15px;
+            line-height: 1.4;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .task:hover {
+            background: var(--white);
+            border-color: var(--accent);
+        }
+
+        .task-n {
+            font-weight: 800;
+            font-size: 12px;
+            color: var(--accent);
+            min-width: 26px;
+            letter-spacing: 0.03em;
+        }
+
+        /* ============================================================
+           ЧТО ПОЛУЧАЕТ БИЗНЕС
+        ============================================================ */
+        #business-gets {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        #business-gets .label {
+            background: rgba(232,160,32,.18);
+            color: var(--accent);
+        }
+
+        #business-gets .section-lead {
+            color: rgba(255,255,255,.5);
+            max-width: 100%;
+        }
+
+        .outcomes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 18px;
+        }
+
+        .outcome {
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: var(--radius);
+            padding: 36px 32px;
+            transition: border-color 0.2s;
+        }
+
+        .outcome:hover { border-color: rgba(232,160,32,.45); }
+
+        .outcome-arrow {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .outcome h3 {
+            font-weight: 800;
+            font-size: 19px;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+        }
+
+        .outcome p {
+            font-weight: 300;
+            font-size: 14px;
+            color: rgba(255,255,255,.48);
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           ФОРМАТЫ РАБОТЫ
+        ============================================================ */
+        #formats { background: var(--off-white); }
+
+        .formats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .format {
+            background: var(--white);
+            border: 1px solid var(--gray-line);
+            border-radius: var(--radius);
+            padding: 44px 40px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .format::after {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .format:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(0,0,0,.09);
+        }
+
+        .format:hover::after { transform: scaleX(1); }
+
+        .format-label {
+            font-weight: 800;
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .format h3 {
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+            margin-bottom: 18px;
+        }
+
+        .format p {
+            font-weight: 300;
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.68;
+        }
+
+        /* ============================================================
+           ПОЧЕМУ СО МНОЙ
+        ============================================================ */
+        #why-me { background: var(--white); }
+
+        .whys {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 16px;
+        }
+
+        .why {
+            display: flex;
+            gap: 18px;
+            padding: 30px;
+            background: var(--off-white);
+            border: 1px solid var(--gray-line);
+            border-radius: var(--radius);
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .why:hover {
+            background: var(--white);
+            border-color: var(--accent);
+        }
+
+        .why-mark {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+            margin-top: 9px;
+        }
+
+        .why p {
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 1.62;
+        }
+
+        /* ============================================================
+           ПРИЗЫВ К ДЕЙСТВИЮ
+        ============================================================ */
+        #cta {
+            background: var(--black);
+            color: var(--white);
+            text-align: center;
+            padding: 130px var(--section-h);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 100%;
+            background: radial-gradient(ellipse, rgba(232,160,32,.12) 0%, transparent 68%);
+            pointer-events: none;
+        }
+
+        #cta h2 {
+            font-weight: 800;
+            font-size: clamp(28px, 4vw, 54px);
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+            max-width: 740px;
+            margin: 0 auto 26px;
+        }
+
+        #cta p {
+            font-weight: 300;
+            font-size: clamp(16px, 1.8vw, 19px);
+            color: rgba(255,255,255,.58);
+            max-width: 580px;
+            margin: 0 auto 52px;
+            line-height: 1.68;
+        }
+
+        /* ============================================================
+           FOOTER
+        ============================================================ */
+        footer {
+            background: var(--black);
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding: 28px var(--section-h);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        footer span {
+            font-weight: 300;
+            font-size: 13px;
+            color: rgba(255,255,255,.28);
+        }
+
+        /* ============================================================
+           АДАПТИВ
+        ============================================================ */
+        @media (max-width: 768px) {
+            :root {
+                --section-v: 70px;
+                --section-h: 5%;
+            }
+
+            .hero { padding-top: 110px; padding-bottom: 70px; }
+            .hero-divider { margin-top: 56px; }
+
+            #cta { padding: 90px var(--section-h); }
+        }
+
+        @media (max-width: 480px) {
+            :root { --section-v: 56px; }
+            .formats { grid-template-columns: 1fr; }
+            .hero-actions { flex-direction: column; align-items: flex-start; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ================================================
+         НАВИГАЦИЯ
+    ================================================ -->
+    <nav>
+        <div class="nav-name">Маркетинг<span> · </span>как функция</div>
+        <a href="#cta" class="nav-btn">Написать</a>
+    </nav>
+
+
+    <!-- ================================================
+         HERO
+    ================================================ -->
+    <section class="hero" id="hero">
+        <div class="hero-badge">Внешний маркетинговый управляющий</div>
+
+        <h1>
+            Собираю маркетинг как<br>
+            <em>управляемую функцию</em><br>
+            для бизнеса
+        </h1>
+
+        <p class="hero-sub">
+            Для компаний, которые уже переросли хаос,<br>
+            но ещё не доросли до полноценного CMO.
+        </p>
+
+        <!-- ПОДЗАГОЛОВОК — основная мысль -->
+        <p class="hero-sub" style="font-size: clamp(14px, 1.6vw, 17px); margin-bottom: 52px;">
+            Подключаюсь как внешний маркетинговый управляющий: выстраиваю стратегию,
+            собираю команду, управляю подрядчиками, помогаю связать маркетинг с продажами
+            и снимаю с собственника ручное управление маркетингом.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#cta" class="btn-primary">Начать с диагностики</a>
+            <a href="#formats" class="btn-ghost">Форматы работы →</a>
+        </div>
+
+        <div class="hero-divider">ПРОКРУТИТЕ ВНИЗ</div>
+    </section>
+
+
+    <!-- ================================================
+         ДЛЯ КОГО
+    ================================================ -->
+    <section id="for-whom">
+        <span class="label">Для кого</span>
+        <h2 class="section-title">Узнаёте себя?</h2>
+        <p class="section-lead">Работаю с компаниями, у которых маркетинг уже есть, но работает по-своему.</p>
+
+        <div class="pains">
+
+            <div class="pain-card">
+                <div class="pain-dot"></div>
+                <p>Маркетинг уже есть, но работает фрагментарно</p>
+            </div>
+
+            <div class="pain-card">
+                <div class="pain-dot"></div>
+                <p>Были попытки в SMM, таргет, контент, коллаборации — но без системы</p>
+            </div>
+
+            <div class="pain-card">
+                <div class="pain-dot"></div>
+                <p>Собственник сам координирует маркетинг и устал от этого</p>
+            </div>
+
+            <div class="pain-card">
+                <div class="pain-dot"></div>
+                <p>Непонятно, кого нанимать в маркетинг и в каком порядке</p>
+            </div>
+
+            <div class="pain-card">
+                <div class="pain-dot"></div>
+                <p>Нужно масштабировать работающие гипотезы</p>
+            </div>
+
+            <div class="pain-card">
+                <div class="pain-dot"></div>
+                <p>Нужен взрослый управленческий контур без найма дорогого full-time CMO</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================================================
+         ЧТО Я ДЕЛАЮ
+    ================================================ -->
+    <section id="what-i-do">
+        <span class="label">Что я делаю</span>
+        <h2 class="section-title">Не веду один канал.<br>Собираю маркетинг как функцию.</h2>
+        <p class="section-lead">Я не просто «веду маркетинг» и не закрываю один канал. Моя задача — собрать маркетинг как функцию.</p>
+
+        <p class="tasks-note">В работу может входить:</p>
+
+        <div class="tasks">
+            <div class="task"><span class="task-n">01</span>Аудит текущей ситуации</div>
+            <div class="task"><span class="task-n">02</span>Формирование маркетинг-стратегии</div>
+            <div class="task"><span class="task-n">03</span>Приоритизация каналов</div>
+            <div class="task"><span class="task-n">04</span>Управление подрядчиками и командой</div>
+            <div class="task"><span class="task-n">05</span>Постановка задач и контроль реализации</div>
+            <div class="task"><span class="task-n">06</span>Помощь в найме и определении ролей</div>
+            <div class="task"><span class="task-n">07</span>Бюджетирование</div>
+            <div class="task"><span class="task-n">08</span>Связка маркетинга с продажами</div>
+            <div class="task"><span class="task-n">09</span>Регулярная управленческая координация</div>
+        </div>
+    </section>
+
+
+    <!-- ================================================
+         ЧТО ПОЛУЧАЕТ БИЗНЕС
+    ================================================ -->
+    <section id="business-gets">
+        <span class="label">Что получает бизнес</span>
+        <h2 class="section-title">Вместо хаоса — система</h2>
+        <p class="section-lead">Вместо хаотичных действий и разрозненных подрядчиков вы получаете:</p>
+
+        <div class="outcomes">
+
+            <div class="outcome">
+                <div class="outcome-arrow">→</div>
+                <h3>Понятную стратегию</h3>
+                <p>Чёткое направление и план, который объясняет каждый шаг</p>
+            </div>
+
+            <div class="outcome">
+                <div class="outcome-arrow">→</div>
+                <h3>Ясные приоритеты</h3>
+                <p>Знаете, что делать первым, а что подождёт</p>
+            </div>
+
+            <div class="outcome">
+                <div class="outcome-arrow">→</div>
+                <h3>Управляемый маркетинг</h3>
+                <p>Маркетинг работает как функция, а не набор разрозненных активностей</p>
+            </div>
+
+            <div class="outcome">
+                <div class="outcome-arrow">→</div>
+                <h3>Правильную последовательность найма</h3>
+                <p>Понимаете, кого брать в команду и в каком порядке</p>
+            </div>
+
+            <div class="outcome">
+                <div class="outcome-arrow">→</div>
+                <h3>Меньше ручной нагрузки</h3>
+                <p>Собственник освобождается от оперативного управления маркетингом</p>
+            </div>
+
+            <div class="outcome">
+                <div class="outcome-arrow">→</div>
+                <h3>Прозрачность решений</h3>
+                <p>Понятное бюджетирование и обоснованные шаги на каждом этапе</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================================================
+         ФОРМАТЫ РАБОТЫ
+    ================================================ -->
+    <section id="formats">
+        <span class="label">Форматы работы</span>
+        <h2 class="section-title">Как мы можем работать</h2>
+        <p class="section-lead">Выбираем формат вместе — в зависимости от задачи и этапа бизнеса.</p>
+
+        <div class="formats">
+
+            <div class="format">
+                <div class="format-label">Формат 01</div>
+                <h3>Диагностика маркетинга</h3>
+                <p>Когда нужно понять, где именно проблема и что делать дальше. Получаете ясную картину текущей ситуации и конкретные рекомендации.</p>
+            </div>
+
+            <div class="format">
+                <div class="format-label">Формат 02</div>
+                <h3>Ведение проекта / внешний управляющий</h3>
+                <p>Когда нужен человек, который не просто советует, а ведёт маркетинг как функцию. Полное погружение в проект.</p>
+            </div>
+
+            <div class="format">
+                <div class="format-label">Формат 03</div>
+                <h3>Частичное сопровождение / Advisory</h3>
+                <p>Когда система уже собрана, но нужен стратегический контроль и поддержка на ключевых развилках.</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================================================
+         ПОЧЕМУ СО МНОЙ
+    ================================================ -->
+    <section id="why-me">
+        <span class="label">Почему со мной</span>
+        <h2 class="section-title">Что отличает мой подход</h2>
+        <p class="section-lead">Не абстрактный маркетинг — рабочая система под конкретный этап роста.</p>
+
+        <div class="whys">
+
+            <div class="why">
+                <div class="why-mark"></div>
+                <p>Понимаю не только стратегию, но и реальную кухню исполнения</p>
+            </div>
+
+            <div class="why">
+                <div class="why-mark"></div>
+                <p>Умею выстраивать команду под этап бизнеса, а не «по шаблону»</p>
+            </div>
+
+            <div class="why">
+                <div class="why-mark"></div>
+                <p>Могу включаться глубоко, в том числе офлайн</p>
+            </div>
+
+            <div class="why">
+                <div class="why-mark"></div>
+                <p>Не продаю абстрактный маркетинг — собираю рабочую систему под конкретный этап роста</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================================================
+         ПРИЗЫВ К ДЕЙСТВИЮ
+    ================================================ -->
+    <section id="cta">
+        <h2>Маркетинг нельзя<br>держать на хаосе?</h2>
+        <p>
+            Напишите мне. Начнём с диагностики и поймём,
+            что именно тормозит рост и какой формат работы вам нужен.
+        </p>
+        <!-- ЗАМЕНИТЕ ссылку на свой Telegram / WhatsApp / email -->
+        <a href="https://t.me/ВАША_ССЫЛКА" class="btn-primary">Написать в Telegram</a>
+    </section>
+
+
+    <!-- ================================================
+         FOOTER
+    ================================================ -->
+    <footer>
+        <span>© 2025 Внешний маркетинговый управляющий</span>
+        <span>Маркетинг как управляемая функция</span>
+    </footer>
+
+</body>
+</html>
